@@ -1,3 +1,11 @@
 spring:
   application:
     name: reserva-sala
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/reserva-sala
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
