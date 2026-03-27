@@ -1,9 +1,11 @@
 package edu.rachelpizane.reserva_sala.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 import java.util.UUID;
 
+@Builder
 @Schema(description = "Dados de resposta da sala")
 public record SalaResponseDTO(
         @Schema(description = "Identificador da sala", example = "b3b1c2d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d")
