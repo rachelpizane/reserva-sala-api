@@ -4,6 +4,7 @@ import edu.rachelpizane.reserva_sala.controller.impl.SalaController;
 import edu.rachelpizane.reserva_sala.dto.SalaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
 import edu.rachelpizane.reserva_sala.enums.TipoErro;
+import edu.rachelpizane.reserva_sala.exception.NotFoundException;
 import edu.rachelpizane.reserva_sala.mocks.SalaMock;
 import edu.rachelpizane.reserva_sala.service.SalaService;
 import edu.rachelpizane.reserva_sala.utils.JsonUtils;
@@ -17,10 +18,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,6 +36,7 @@ class SalaControllerTest {
     private SalaService service;
 
     private static final String SALA_URL = "/salas";
+    private static final String SALA_ID_URL = SALA_URL + "/{id}";
 
     @Nested
     class CadastrarSalaTests {
@@ -70,6 +74,34 @@ class SalaControllerTest {
                     SalaMock.umSalaRequestDto().localizacao("a".repeat(201)).build(),
                     SalaMock.umSalaRequestDto().descricao("a".repeat(256)).build()
             );
+        }
+    }
+
+    @Nested
+    class BuscarSalaTests {
+        @Test
+        void deveBuscarSalaComSucesso() throws Exception {
+            SalaResponseDTO response = SalaMock.umSalaResponseDto().build();
+
+            when(service.buscarSala(response.id())).thenReturn(response);
+
+            mockMvc.perform(get(SALA_ID_URL, response.id())
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(JsonUtils.convertToJson(response)));
+        }
+
+        @Test
+        void deveRetornarNotFoundQuandoSalaNaoEncontrada() throws Exception {
+            UUID idInvalido = UUID.randomUUID();
+
+            when(service.buscarSala(idInvalido)).thenThrow(new NotFoundException("Sala não encontrada"));
+
+            mockMvc.perform(get(SALA_ID_URL, idInvalido)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.tipoErro").value(TipoErro.NAO_ENCONTRADO.name()))
+                    .andExpect(jsonPath("$.mensagens.length()").value(greaterThan(0)));
         }
     }
 }
