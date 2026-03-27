@@ -10,9 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Tag(
         name = "Salas",
@@ -41,4 +41,24 @@ public interface SalaApi {
     @PostMapping
     ResponseEntity<SalaResponseDTO> cadastrarSala(@Valid @RequestBody(required = true) SalaRequestDTO request);
 
+    @Operation(
+            summary = "Buscar uma sala",
+            description = "Busca uma sala pelo seu id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Sala buscada com sucesso",
+            content = @Content(
+                    schema = @Schema(implementation = SalaResponseDTO.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Sala não encontrada",
+            content = @Content(
+                    schema = @Schema(implementation = ErrorResponseDTO.class)
+            )
+    )
+    @GetMapping("/{id}")
+    ResponseEntity<SalaResponseDTO> buscarSala(@PathVariable UUID id);
 }

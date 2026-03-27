@@ -6,10 +6,7 @@ import java.util.List;
 
 @Schema(description = "Dados de resposta para erros da API")
 public record ErrorResponseDTO(
-        @Schema(
-                description = "Tipo de erro ocorrido",
-                example = "DADOS_INVALIDOS"
-        )
+        @Schema(description = "Tipo de erro ocorrido")
         String tipoErro,
 
         @Schema(description = "Lista de mensagens que detallha os erros ocorridos")

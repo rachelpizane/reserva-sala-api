@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -22,5 +23,12 @@ public class SalaController implements SalaApi {
         URI location = UriUtils.construirLocation(response.id());
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @Override
+    public ResponseEntity<SalaResponseDTO> buscarSala(UUID id) {
+        SalaResponseDTO response = service.buscarSala(id);
+
+        return ResponseEntity.ok(response);
     }
 }
