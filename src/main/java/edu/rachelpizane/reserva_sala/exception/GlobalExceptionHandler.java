@@ -13,6 +13,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ConflictBusinessException.class)
+    public ResponseEntity<ErrorResponseDTO> handleConflictBusinessException(
+            ConflictBusinessException ex) {
+
+        ErrorResponseDTO response = new ErrorResponseDTO(
+                ex.getTipoErro().toString(),
+                List.of(ex.getMessage())
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotFoundException(
             NotFoundException ex) {
@@ -30,7 +42,7 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex) {
 
         List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
+                .getAllErrors()
                 .stream()
                 .map(error -> error.getDefaultMessage())
                 .toList();

@@ -2,6 +2,7 @@ package edu.rachelpizane.reserva_sala.mapper;
 
 import edu.rachelpizane.reserva_sala.dto.SalaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
+import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
 import edu.rachelpizane.reserva_sala.model.Sala;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,4 +14,6 @@ public interface SalaMapper {
     Sala paraEntidade(SalaRequestDTO request);
 
     SalaResponseDTO paraDto(Sala sala);
+
+    SalaResumoDTO paraResumoDto(Sala sala);
 }

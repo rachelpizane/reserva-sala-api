@@ -1,0 +1,17 @@
+package edu.rachelpizane.reserva_sala.validation.horariocomercial;
+
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
+import java.lang.annotation.*;
+
+@Documented
+@Constraint(validatedBy = HorarioComercialValidator.class)
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface HorarioComercial {
+    String message() default "Horário deve ser entre 08:00 e 20:00";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
