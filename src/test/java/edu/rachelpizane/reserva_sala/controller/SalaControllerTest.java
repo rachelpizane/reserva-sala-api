@@ -3,6 +3,7 @@ package edu.rachelpizane.reserva_sala.controller;
 import edu.rachelpizane.reserva_sala.controller.impl.SalaController;
 import edu.rachelpizane.reserva_sala.dto.SalaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
+import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
 import edu.rachelpizane.reserva_sala.enums.TipoErro;
 import edu.rachelpizane.reserva_sala.exception.NotFoundException;
 import edu.rachelpizane.reserva_sala.mocks.SalaMock;
@@ -18,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -102,6 +104,27 @@ class SalaControllerTest {
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.tipoErro").value(TipoErro.NAO_ENCONTRADO.name()))
                     .andExpect(jsonPath("$.mensagens.length()").value(greaterThan(0)));
+        }
+    }
+
+    @Nested
+    class BuscarSalasTests {
+        @ParameterizedTest
+        @MethodSource("salasProvider")
+        void deveBuscarSalasComSucesso(List<SalaResumoDTO> response) throws Exception {
+            when(service.buscarSalas()).thenReturn(response);
+
+            mockMvc.perform(get(SALA_URL)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(JsonUtils.convertToJson(response)));
+        }
+
+        static Stream<List<SalaResumoDTO>> salasProvider() {
+            return Stream.of(
+                    List.of(),
+                    List.of(SalaMock.umSalaResumoDto().build())
+            );
         }
     }
 }

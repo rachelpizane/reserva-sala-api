@@ -86,6 +86,7 @@ class ReservaServiceImplTest {
             assertThrows(NotFoundException.class, () -> {
                 service.cadastrarReserva(request);
             });
+            verify(reservaRepository , never()).save(any(Reserva.class));
         }
 
         @Test
@@ -100,6 +101,7 @@ class ReservaServiceImplTest {
             assertThrows(ConflictBusinessException.class, () -> {
                 service.cadastrarReserva(request);
             });
+            verify(reservaRepository , never()).save(any(Reserva.class));
         }
     }
 

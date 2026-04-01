@@ -2,6 +2,7 @@ package edu.rachelpizane.reserva_sala.service;
 
 import edu.rachelpizane.reserva_sala.dto.SalaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
+import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
 import edu.rachelpizane.reserva_sala.exception.NotFoundException;
 import edu.rachelpizane.reserva_sala.mapper.SalaMapper;
 import edu.rachelpizane.reserva_sala.mocks.SalaMock;
@@ -16,9 +17,11 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,6 +82,20 @@ class SalaServiceImplTest {
             assertThrows(NotFoundException.class, () -> {
                 service.buscarSala(idInvalido);
             });
+        }
+    }
+
+    @Nested
+    class BuscarSalasTests {
+        @Test
+        void deveBuscarSalasComSucesso(){
+            SalaResumoDTO sala = SalaMock.umSalaResumoDto().build();
+            when(repository.findAllBy()).thenReturn(List.of(sala));
+
+            List<SalaResumoDTO> response = service.buscarSalas();
+
+            assertThat(response).hasSize(1);
+            assertEquals(sala.id(), response.getFirst().id());
         }
     }
 }
