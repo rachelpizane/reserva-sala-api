@@ -102,4 +102,29 @@ class ReservaServiceImplTest {
             });
         }
     }
+
+    @Nested
+    class BuscarReservaTests {
+        @Test
+        void deveBuscarReservaCorretamente(){
+            Reserva reserva = ReservaMock.umaReserva().build();
+
+            when(reservaRepository.findById(reserva.getId())).thenReturn(Optional.of(reserva));
+
+            ReservaResponseDTO response = service.buscarReserva(reserva.getId());
+
+            assertEquals(reserva.getId(), response.id());
+        }
+
+        @Test
+        void deveLancarNotFoundQuandoReservaNaoEncontrada(){
+            UUID idInvalido = UUID.randomUUID();
+
+            when(reservaRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+            assertThrows(NotFoundException.class, () -> {
+                service.buscarReserva(idInvalido);
+            });
+        }
+    }
 }

@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -115,6 +116,34 @@ class ReservaControllerTest {
                             .content(JsonUtils.convertToJson(request)))
                     .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.tipoErro").value(TipoErro.CONFLITO_HORARIO.name()))
+                    .andExpect(jsonPath("$.mensagens.length()").value(greaterThan(0)));
+        }
+    }
+
+    @Nested
+    class BuscarReservaTests {
+        @Test
+        void deveBuscarReservaComSucesso() throws Exception {
+            ReservaResponseDTO response = ReservaMock.umReservaResponseDto().build();
+
+            when(service.buscarReserva(response.id())).thenReturn(response);
+
+            mockMvc.perform(get(RESERVA_ID_URL, response.id())
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(JsonUtils.convertToJson(response)));
+        }
+
+        @Test
+        void deveRetornarNotFoundQuandoReservaNaoEncontrada() throws Exception {
+            UUID idInvalido = UUID.randomUUID();
+
+            when(service.buscarReserva(idInvalido)).thenThrow(new NotFoundException("Reserva não encontrada"));
+
+            mockMvc.perform(get(RESERVA_ID_URL, idInvalido)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.tipoErro").value(TipoErro.NAO_ENCONTRADO.name()))
                     .andExpect(jsonPath("$.mensagens.length()").value(greaterThan(0)));
         }
     }
