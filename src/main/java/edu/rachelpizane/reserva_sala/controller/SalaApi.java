@@ -3,7 +3,9 @@ package edu.rachelpizane.reserva_sala.controller;
 import edu.rachelpizane.reserva_sala.dto.ErrorResponseDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
+import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Tag(
@@ -61,4 +64,18 @@ public interface SalaApi {
     )
     @GetMapping("/{id}")
     ResponseEntity<SalaResponseDTO> buscarSala(@PathVariable UUID id);
+
+    @Operation(
+            summary = "Buscar salas",
+            description = "Retorna uma lista de salas"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Lista de salas buscadas com sucesso",
+            content = @Content(
+                    array = @ArraySchema(schema = @Schema(implementation = SalaResumoDTO.class))
+            )
+    )
+    @GetMapping
+    public ResponseEntity<List<SalaResumoDTO>> buscarSalas();
 }
