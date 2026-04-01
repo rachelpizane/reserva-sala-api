@@ -36,6 +36,13 @@ public class ReservaServiceImpl implements ReservaService {
         return mapper.paraDto(reservaSalva);
     }
 
+    @Override
+    public ReservaResponseDTO buscarReserva(UUID id){
+        return reservaRepository.findById(id)
+                .map(mapper::paraDto)
+                .orElseThrow(() -> new NotFoundException("Reserva não encontrada"));
+    }
+
     private Sala buscarSala(UUID id){
         return salaRepository
                 .findById(id)

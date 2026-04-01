@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -23,5 +24,12 @@ public class ReservaController implements ReservaApi {
         URI location = UriUtils.construirLocation(response.id());
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @Override
+    public ResponseEntity<ReservaResponseDTO> buscarReserva(UUID id) {
+        ReservaResponseDTO response = service.buscarReserva(id);
+
+        return ResponseEntity.ok(response);
     }
 }
