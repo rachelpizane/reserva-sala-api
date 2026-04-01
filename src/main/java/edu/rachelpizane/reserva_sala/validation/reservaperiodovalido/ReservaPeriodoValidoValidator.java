@@ -10,7 +10,7 @@ public class ReservaPeriodoValidoValidator implements ConstraintValidator<Reserv
 
     @Override
     public boolean isValid(ReservaRequestDTO dto, ConstraintValidatorContext context) {
-        if (dto == null || dto.inicio() == null || dto.fim() == null) return true;
+        if (dto.inicio() == null || dto.fim() == null) return true;
 
         LocalDateTime inicio = dto.inicio();
         LocalDateTime fim = dto.fim();
