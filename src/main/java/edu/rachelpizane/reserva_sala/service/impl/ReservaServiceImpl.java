@@ -38,7 +38,7 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public ReservaResponseDTO buscarReserva(UUID id){
-        return reservaRepository.findById(id)
+        return reservaRepository.buscarReservaPorId(id)
                 .map(mapper::paraDto)
                 .orElseThrow(() -> new NotFoundException("Reserva não encontrada"));
     }

@@ -21,6 +21,6 @@ public record ReservaResponseDTO(
         @Schema(description = "Data e hora de fim da reserva", example = "2026-04-01T10:00:00")
         LocalDateTime fim,
 
-        @Schema(description = "Resumo da sala reservada")
-        SalaResumoDTO sala
+        @Schema(description = "Dados da sala reservada")
+        SalaResponseDTO sala
 ) {}

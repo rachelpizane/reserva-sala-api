@@ -7,6 +7,7 @@ import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +39,11 @@ public interface SalaApi {
             responseCode = "400",
             description = "Dados inválidos",
             content = @Content(
-                    schema = @Schema(implementation = ErrorResponseDTO.class)
+                    schema = @Schema(implementation = ErrorResponseDTO.class),
+                    examples = @ExampleObject(
+                            name = "Dados Inválidos",
+                            value = "{\"tipoErro\": \"DADOS_INVALIDOS\", \"mensagens\": [\"Nome é obrigatório.\"]}"
+                    )
             )
     )
     @PostMapping
@@ -59,8 +64,12 @@ public interface SalaApi {
             responseCode = "404",
             description = "Sala não encontrada",
             content = @Content(
-                    schema = @Schema(implementation = ErrorResponseDTO.class)
+            schema = @Schema(implementation = ErrorResponseDTO.class),
+            examples = @ExampleObject(
+                    name = "Sala Não Encontrada",
+                    value = "{\"tipoErro\": \"NAO_ENCONTRADO\", \"mensagens\": [\"Sala não encontrada\"]}"
             )
+    )
     )
     @GetMapping("/{id}")
     ResponseEntity<SalaResponseDTO> buscarSala(@PathVariable UUID id);

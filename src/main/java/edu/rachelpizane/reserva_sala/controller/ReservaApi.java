@@ -74,7 +74,7 @@ public interface ReservaApi {
             responseCode = "200",
             description = "Reserva buscada com sucesso",
             content = @Content(
-                    schema = @Schema(implementation = SalaResponseDTO.class)
+                    schema = @Schema(implementation = ReservaResponseDTO.class)
             )
     )
     @ApiResponse(

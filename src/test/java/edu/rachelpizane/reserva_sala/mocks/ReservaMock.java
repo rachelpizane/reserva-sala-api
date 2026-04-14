@@ -2,7 +2,7 @@ package edu.rachelpizane.reserva_sala.mocks;
 
 import edu.rachelpizane.reserva_sala.dto.ReservaRequestDTO;
 import edu.rachelpizane.reserva_sala.dto.ReservaResponseDTO;
-import edu.rachelpizane.reserva_sala.dto.SalaResumoDTO;
+import edu.rachelpizane.reserva_sala.dto.SalaResponseDTO;
 import edu.rachelpizane.reserva_sala.model.Reserva;
 
 import java.time.LocalDateTime;
@@ -16,9 +16,10 @@ public class ReservaMock {
                 .organizador("Maria Silva")
                 .inicio(LocalDateTime.now().plusDays(1).withHour(9))
                 .fim(LocalDateTime.now().plusDays(1).withHour(10))
-                .sala(SalaResumoDTO.builder()
+                .sala(SalaResponseDTO.builder()
                         .id(UUID.randomUUID())
                         .nome("Sala de Reunião 1")
+                        .capacidade(10)
                         .build());
     }
 

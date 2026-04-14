@@ -111,7 +111,7 @@ class ReservaServiceImplTest {
         void deveBuscarReservaCorretamente(){
             Reserva reserva = ReservaMock.umaReserva().build();
 
-            when(reservaRepository.findById(reserva.getId())).thenReturn(Optional.of(reserva));
+            when(reservaRepository.buscarReservaPorId(reserva.getId())).thenReturn(Optional.of(reserva));
 
             ReservaResponseDTO response = service.buscarReserva(reserva.getId());
 
@@ -122,7 +122,7 @@ class ReservaServiceImplTest {
         void deveLancarNotFoundQuandoReservaNaoEncontrada(){
             UUID idInvalido = UUID.randomUUID();
 
-            when(reservaRepository.findById(idInvalido)).thenReturn(Optional.empty());
+            when(reservaRepository.buscarReservaPorId(idInvalido)).thenReturn(Optional.empty());
 
             assertThrows(NotFoundException.class, () -> {
                 service.buscarReserva(idInvalido);
