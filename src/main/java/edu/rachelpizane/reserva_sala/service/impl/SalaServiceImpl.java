@@ -37,6 +37,6 @@ public class SalaServiceImpl implements SalaService {
 
     @Override
     public List<SalaResumoDTO> buscarSalas(){
-        return repository.findAllBy();
+        return repository.findAllByOrderByNomeAsc();
     }
 }

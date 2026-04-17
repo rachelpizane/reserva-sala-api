@@ -90,7 +90,7 @@ class SalaServiceImplTest {
         @Test
         void deveBuscarSalasComSucesso(){
             SalaResumoDTO sala = SalaMock.umSalaResumoDto().build();
-            when(repository.findAllBy()).thenReturn(List.of(sala));
+            when(repository.findAllByOrderByNomeAsc()).thenReturn(List.of(sala));
 
             List<SalaResumoDTO> response = service.buscarSalas();
 

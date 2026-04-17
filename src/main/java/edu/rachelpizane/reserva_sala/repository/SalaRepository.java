@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface SalaRepository extends JpaRepository<Sala, UUID> {
-    List<SalaResumoDTO> findAllBy();
+    List<SalaResumoDTO> findAllByOrderByNomeAsc();
 }
